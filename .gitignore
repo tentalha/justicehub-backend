@@ -1,0 +1,31 @@
+# Dependency directories
+node_modules/
+
+# OS and IDE files
+.DS_Store
+.vscode/
+.idea/
+
+# Log files
+*.log
+npm-debug.log*
+
+
+# Built output (if using a build system like webpack)
+/dist/
+/build/
+
+# Optional: Uncomment the following lines if you're using TypeScript
+# .tsbuildinfo
+
+# Optional: Uncomment the following lines if you're using Babel
+# /lib/
+
+# Optional: Uncomment the following line if you're using Prettier
+# .prettierrc*
+
+# Optional: Uncomment the following line if you're using ESLint
+# .eslintcache
+
+# Optional: Uncomment the following line if you're using Jest
+# /coverage/
