@@ -5,12 +5,14 @@ import { upload } from "../configs";
 
 import {
   approveFIRValidation,
+  deleteFIRValidation,
   firCreationValidationRules,
 } from "../validations";
 
 import {
   approveFIRandAssignInvestigator,
   createFir,
+  deleteFIR,
   getActiveFIRs,
   getAllFIRs,
   getClosedFIRs,
@@ -44,6 +46,15 @@ router.post(
   approveFIRValidation(),
   validate,
   approveFIRandAssignInvestigator
+);
+
+//DELETE
+router.delete(
+  "/:caseId",
+  hasRights(["admin"]),
+  deleteFIRValidation(),
+  validate,
+  deleteFIR
 );
 
 export default router;

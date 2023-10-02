@@ -79,3 +79,13 @@ export const approveFIRValidation = () => {
       .withMessage("Invalid Investigator Id"),
   ];
 };
+
+export const deleteFIRValidation = () => {
+  return [
+    param("caseId")
+      .notEmpty()
+      .withMessage("Case caseId is required in query params")
+      .custom((value) => mongoose.Types.ObjectId.isValid(value))
+      .withMessage("Invalid caseId mentioned in query"),
+  ];
+};

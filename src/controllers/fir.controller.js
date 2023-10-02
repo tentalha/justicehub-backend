@@ -14,6 +14,7 @@ import {
   getUserByCNIC,
   updateInvestigatorAvailability,
   approveFIRandAssignment,
+  deleteFIRId,
 } from "../services";
 import cloudinary from "../configs/cloudinaryConfig";
 import { sanitizeFir, sanitizeFirs } from "../utils";
@@ -47,7 +48,10 @@ export const createFir = async (req, res, next) => {
       details: req.body?.details,
       location: req.body?.location,
       suspects: req.body?.suspects,
-      relevantDocs: upload?.secure_url,
+      relevantDocs: {
+        url: upload?.secure_url,
+        public_id: upload?.public_id,
+      },
       operatorId: req?.user,
       caseNo: req.body.caseNo,
     };
@@ -181,6 +185,35 @@ export const approveFIRandAssignInvestigator = async (req, res, next) => {
       `Investigator with CNIC ${investigator?.CNIC} is assigned to Case #${fir?.caseNo}`
     );
   } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteFIR = async (req, res, next) => {
+  try {
+    let fir = await fetchCaseById(req.params.caseId);
+    if (!fir) {
+      return R4XX(
+        res,
+        404,
+        "NOT-FOUND",
+        `Case with id ${req.params.caseId} not found.`
+      );
+    }
+
+    if (fir?.relevantDocs) {
+      console.log(fir.relevantDocs);
+      await cloudinary.destroy(fir?.relevantDocs?.public_id, {
+        resource_type: "raw",
+      });
+    }
+
+    await deleteFIRId(fir?._id);
+    R2XX(res, 200, "SUCCESS", `Case ${fir?._id} deleted successfully.`, {
+      fir,
+    });
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 };

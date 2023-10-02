@@ -60,7 +60,12 @@ const firSchema = new Schema(
       },
     ],
     relevantDocs: {
-      type: String,
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      },
     },
   },
   {

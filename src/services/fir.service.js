@@ -119,3 +119,11 @@ export const approveFIRandAssignment = async (caseId, investigatorId) => {
     return Promise.reject(error);
   }
 };
+
+export const deleteFIRId = async (id) => {
+  try {
+    await FIR.findByIdAndDelete(id);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

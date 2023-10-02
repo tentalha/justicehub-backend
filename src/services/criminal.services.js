@@ -37,7 +37,7 @@ export const deleteCriminal = async (id) => {
     const criminal = await fetchCriminalId(id, { _id: id });
     if (criminal) {
       await Criminal.findByIdAndDelete(criminal);
-      return true;
+      return criminal;
     }
     return false;
   } catch (error) {

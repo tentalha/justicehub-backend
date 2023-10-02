@@ -36,3 +36,14 @@ export const sanitizeFir = (fir) => {
 export const sanitizeFirs = (firs) => {
   return firs.map((fir) => sanitizeFir(fir));
 };
+
+export const sanitizeCriminal = (criminal) => {
+  return {
+    ...criminal,
+    image: criminal?.image?.url,
+  };
+};
+
+export const sanitizeCriminals = (criminals) => {
+  return criminals.map((crim) => sanitizeCriminal(crim));
+};
