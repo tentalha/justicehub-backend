@@ -53,4 +53,10 @@ export const getCriminalByCNIC = async (CNIC) => {
   }
 };
 
-export const patchCriminal = async (id, body) => {};
+export const patchCriminal = async (id, body) => {
+  try {
+    return await Criminal.findByIdAndUpdate(id, body, { new: true });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

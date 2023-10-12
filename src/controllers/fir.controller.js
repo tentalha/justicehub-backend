@@ -201,8 +201,7 @@ export const deleteFIR = async (req, res, next) => {
       );
     }
 
-    if (fir?.relevantDocs) {
-      console.log(fir.relevantDocs);
+    if (fir?.relevantDocs["public_id"]) {
       await cloudinary.destroy(fir?.relevantDocs?.public_id, {
         resource_type: "raw",
       });

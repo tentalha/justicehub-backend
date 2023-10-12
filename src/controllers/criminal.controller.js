@@ -5,9 +5,11 @@ import {
   fetchAllCriminals as fetchAllCriminalsS,
   deleteCriminal as deleteCriminalS,
   fetchCriminalId,
+  patchCriminal,
 } from "../services";
 import { USER_ALREADY_EXIST } from "../constants";
 import cloudinary from "../configs/cloudinaryConfig";
+import { sanitizeCriminal } from "../utils";
 
 export const createCriminal = async (req, res, next) => {
   try {
@@ -25,6 +27,7 @@ export const createCriminal = async (req, res, next) => {
         `Criminal with CNIC ${req.body.CNIC} already exists`
       );
     }
+
     const upload = await cloudinary.upload(req.file.path);
 
     let payload = {
@@ -64,13 +67,49 @@ export const deleteCriminalId = async (req, res, next) => {
     if (!criminal) {
       return R4XX(res, 404, "NOT-FOUND", `Criminal with id /${id}/ not found`);
     }
+
     await cloudinary.destroy(criminal?.image?.public_id);
-    
+
     await deleteCriminalS(id);
 
     R2XX(res, 200, "SUCCESS", "Criminal Deleted", { criminal });
   } catch (error) {
     console.log(error);
+    next(error);
+  }
+};
+
+export const updateCriminalId = async (req, res, next) => {
+  try {
+    let upload;
+    let id = req.params.id;
+    const criminal = await fetchCriminalId(id);
+
+    if (!criminal) {
+      return R4XX(res, 404, "NOT-FOUND", `Criminal with id /${id}/ not found`);
+    }
+
+    if (req.file) {
+      await cloudinary.destroy(criminal?.image?.public_id);
+      upload = await cloudinary.upload(req.file.path);
+    }
+
+    let payload = {
+      name: req?.body?.name,
+      age: req?.body?.age,
+      CNIC: req?.body?.CNIC,
+      image: {
+        url: upload?.secure_url || criminal.image.url,
+        public_id: upload?.public_id || criminal.image.public_id,
+      },
+    };
+
+    let updatedCriminal = await patchCriminal(id, payload);
+
+    R2XX(res, 200, "SUCCESS", `Criminal with id ${id} updated`, {
+      criminal: updatedCriminal,
+    });
+  } catch (error) {
     next(error);
   }
 };

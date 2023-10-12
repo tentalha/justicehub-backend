@@ -38,6 +38,7 @@ export const sanitizeFirs = (firs) => {
 };
 
 export const sanitizeCriminal = (criminal) => {
+  console.log(criminal);
   return {
     ...criminal,
     image: criminal?.image?.url,
