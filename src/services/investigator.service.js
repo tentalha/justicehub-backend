@@ -56,3 +56,11 @@ export const updateInvestigatorAvailability = async (id, isAvailable) => {
     return Promise.reject(error);
   }
 };
+
+export const updateInvestigator = async (id, body) => {
+  try {
+    return await User.findByIdAndUpdate(id, body, { new: true });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

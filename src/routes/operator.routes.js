@@ -1,12 +1,14 @@
 import {
   mongoIdValidation,
   resourceCreationValidationRules,
+  resourceUpdationValidationRules,
 } from "../validations";
 import {
   getAllOperator,
   postOperator,
   getOperatorId,
   deleteOperatorId,
+  patchOperatorId,
 } from "../controllers";
 import { Router } from "express";
 import { validate } from "../middlewares";
@@ -25,8 +27,12 @@ router.post(
   postOperator
 );
 //Edit operator
-router.put("/:id", mongoIdValidation(), (req, res) =>
-  res.json("API not yet ready")
+router.patch(
+  "/:id",
+  mongoIdValidation(),
+  resourceUpdationValidationRules(),
+  validate,
+  patchOperatorId
 );
 //Delete operator
 router.delete("/:id", mongoIdValidation(), validate, deleteOperatorId);

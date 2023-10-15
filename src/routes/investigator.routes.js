@@ -3,10 +3,12 @@ import {
   getInvestigatorId,
   postInvestigator,
   getAllInvestigators,
+  patchInvestigatorId,
 } from "../controllers";
 import {
   mongoIdValidation,
   resourceCreationValidationRules,
+  resourceUpdationValidationRules,
 } from "../validations";
 import { validate } from "../middlewares";
 import { Router } from "express";
@@ -25,8 +27,12 @@ router.post(
   postInvestigator
 );
 //Edit operator
-router.put("/:id", mongoIdValidation(), (req, res) =>
-  res.json("API not yet ready")
+router.patch(
+  "/:id",
+  mongoIdValidation(),
+  resourceUpdationValidationRules(),
+  validate,
+  patchInvestigatorId
 );
 //Delete operator
 router.delete("/:id", mongoIdValidation(), validate, deleteInvestigatorId);

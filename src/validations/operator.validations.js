@@ -58,3 +58,30 @@ export const mongoIdValidation = () => {
       .withMessage("Invalid Id mentioned in query"),
   ];
 };
+
+export const resourceUpdationValidationRules = (role) => {
+  return [
+    body("email")
+      .optional()
+      .trim()
+      .isEmail()
+      .withMessage(EMAIL_INVALID)
+      .isLength({ min: 6 }),
+    body("name")
+      .optional()
+      .isString()
+      .isLength({ min: 3 })
+      .withMessage(NAME_INVALID)
+      .matches(/^[A-Za-z\s]+$/)
+      .withMessage(LETTER_SPACES),
+    body("CNIC")
+      .optional()
+      .isString()
+      .matches(/^\d{5}-\d{7}-\d{1}$/)
+      .withMessage(CNIC_INVALID),
+    body("password")
+      .optional()
+      .isLength({ min: 8 })
+      .withMessage(PASSWORD_INVALID),
+  ];
+};

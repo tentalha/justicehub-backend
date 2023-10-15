@@ -48,4 +48,10 @@ export const deleteOperator = async (id) => {
   }
 };
 
-export const pathOperator = async (id, body) => {};
+export const updateOperator = async (id, body) => {
+  try {
+    return await User.findByIdAndUpdate(id, body, { new: true });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

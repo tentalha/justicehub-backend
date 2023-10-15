@@ -6,6 +6,7 @@ import {
   fetchOperatorId,
   getUserByCNIC,
   getUserByEmail,
+  updateOperator,
 } from "../services";
 import { USER_ALREADY_EXIST } from "../constants";
 import { sanitizeUser } from "../utils";
@@ -66,12 +67,32 @@ export const getOperatorId = async (req, res, next) => {
 export const deleteOperatorId = async (req, res, next) => {
   try {
     let id = req.params.id;
-    const operatorToDelete = await fetchOperatorId(id)
+    const operatorToDelete = await fetchOperatorId(id);
     const operator = await deleteOperator(id);
     if (!operator) {
       return R4XX(res, 404, "NOT-FOUND", `Operator with id /${id}/ not found`);
     }
-    R2XX(res, 200, "SUCCESS", "Operator Deleted",{operator: sanitizeUser(operatorToDelete)});
+    R2XX(res, 200, "SUCCESS", "Operator Deleted", {
+      operator: sanitizeUser(operatorToDelete),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const patchOperatorId = async (req, res, next) => {
+  try {
+    let id = req.params.id;
+    const operatorToPatch = await fetchOperatorId(id);
+
+    if (!operatorToPatch) {
+      return R4XX(res, 404, "NOT-FOUND", `Operator with id /${id}/ not found`);
+    }
+
+    const updatedOperator = await updateOperator(id, req.body);
+    R2XX(res, 200, "SUCCESS", "Investigator Updated", {
+      operator: sanitizeUser(updatedOperator),
+    });
   } catch (error) {
     next(error);
   }
