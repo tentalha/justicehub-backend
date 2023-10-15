@@ -67,14 +67,12 @@ export const deleteCriminalId = async (req, res, next) => {
     if (!criminal) {
       return R4XX(res, 404, "NOT-FOUND", `Criminal with id /${id}/ not found`);
     }
+    await deleteCriminalS(id);
 
     await cloudinary.destroy(criminal?.image?.public_id);
 
-    await deleteCriminalS(id);
-
     R2XX(res, 200, "SUCCESS", "Criminal Deleted", { criminal });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
