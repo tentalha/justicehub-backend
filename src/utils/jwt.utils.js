@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { ACCESS_PRIVATE_KEY, ACCESS_PUB_KEY } from "../configs";
 
 // ------------------------------------------------------------------>>
-export const issueJWT = (data, expiresIn) => {
+export const issueJWT = (data, expiresIn, priv_key) => {
   expiresIn = expiresIn ? expiresIn : "1h";
 
   const payload = {
@@ -10,10 +10,14 @@ export const issueJWT = (data, expiresIn) => {
     role: data?.role,
   };
 
-  let accessToken = jwt.sign(payload, ACCESS_PRIVATE_KEY, {
-    expiresIn,
-    algorithm: "RS256",
-  });
+  let accessToken = jwt.sign(
+    payload,
+    priv_key ? priv_key : ACCESS_PRIVATE_KEY,
+    {
+      expiresIn,
+      algorithm: "RS256",
+    }
+  );
 
   return {
     jwtToken: accessToken,
@@ -23,7 +27,7 @@ export const issueJWT = (data, expiresIn) => {
 
 // -------------------------------------------------------------------->>
 
-export const verifyToken = (token) => {
+export const verifyToken = (token, ) => {
   return jwt.verify(
     token,
     ACCESS_PUB_KEY,

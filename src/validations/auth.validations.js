@@ -53,3 +53,23 @@ export const loginValidationRules = () => {
   ];
 };
 
+export const forgetPasswordValidation = () => {
+  return [
+    body("email")
+      .notEmpty()
+      .withMessage(EMAIL_REQUIRED)
+      .trim()
+      .isEmail()
+      .withMessage(EMAIL_INVALID),
+  ];
+};
+
+export const resetPasswordValidation = () => {
+  return [
+    body("password")
+      .notEmpty()
+      .withMessage(PASSWORD_REQUIRED)
+      .isLength({ min: 8 })
+      .withMessage(PASSWORD_INVALID),
+  ];
+};
