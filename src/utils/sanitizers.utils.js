@@ -20,7 +20,7 @@ export const sanitizeFir = (fir) => {
   return {
     _id: fir?._id,
     caseNo: fir?.caseNo,
-    details: fir?.caseNo,
+    details: fir?.details,
     datetime: new Date(fir?.datetime).toLocaleDateString(),
     location: fir?.location,
     status: fir?.status,

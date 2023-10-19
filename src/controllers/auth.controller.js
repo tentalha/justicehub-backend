@@ -118,7 +118,7 @@ export const resetPassword = async (req, res, next) => {
     if (!tokenFromDb.length || tokenFromDb[0].token !== token) {
       return R4XX(
         res,
-        400,
+        498,
         "INVALID/EXPIRED TOKEN",
         "Token is invalid/expired. Visit /backend/api/auth/forget-password to retrieve new token."
       );

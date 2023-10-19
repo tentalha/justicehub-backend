@@ -15,6 +15,7 @@ import {
   updateInvestigatorAvailability,
   approveFIRandAssignment,
   deleteFIRId,
+  fetchCaseByInvestigatorId,
 } from "../services";
 import cloudinary from "../configs/cloudinaryConfig";
 import { sanitizeFir, sanitizeFirs } from "../utils";
@@ -76,6 +77,8 @@ export const getAllFIRs = async (req, res, next) => {
       case "operator":
         firs = await fetchCaseByOperatorId(req.user);
         break;
+      default:
+        firs = await fetchCaseByInvestigatorId(req.user);
     }
     R2XX(res, 200, "SUCCESS", "FIRs list in payload", {
       firs: sanitizeFirs(firs),
@@ -212,7 +215,31 @@ export const deleteFIR = async (req, res, next) => {
       fir,
     });
   } catch (error) {
-    console.log(error);
+    next(error);
+  }
+};
+
+export const updateFIRStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.query;
+    const fir = await fetchCaseById(id);
+
+    if (!fir) {
+      return R4XX(res, 404, "NOT-FOUND", `Case ${id} not found.`);
+    }
+
+    fir.status = status;
+
+    await Promise.all([
+      fir.save(),
+      updateInvestigatorAvailability(fir?.investigatorId, true),
+    ]);
+
+    R2XX(res, 200, "SUCCESS", `Case ${id}'s status updated.`, {
+      fir: sanitizeFir(fir),
+    });
+  } catch (error) {
     next(error);
   }
 };

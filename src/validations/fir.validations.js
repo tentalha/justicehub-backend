@@ -4,7 +4,7 @@ import {
   CNIC_INVALID,
   LETTER_SPACES,
 } from "../constants";
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 import mongoose from "mongoose";
 
 export const firCreationValidationRules = () => {
@@ -87,5 +87,15 @@ export const deleteFIRValidation = () => {
       .withMessage("Case caseId is required in query params")
       .custom((value) => mongoose.Types.ObjectId.isValid(value))
       .withMessage("Invalid caseId mentioned in query"),
+  ];
+};
+
+export const validateStatus = () => {
+  return [
+    query("status")
+      .notEmpty()
+      .withMessage("Status is required in query")
+      .isIn(["completed", "closed"])
+      .withMessage("Invalid Status in query"),
   ];
 };

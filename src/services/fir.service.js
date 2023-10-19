@@ -50,6 +50,15 @@ export const fetchCaseByOperatorId = async (operatorId) => {
   }
 };
 
+export const fetchCaseByInvestigatorId = async (investigatorId) => {
+  try {
+    const fir = await FIR.find({ investigatorId });
+    return fir;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const fetchAllFIRs = async () => {
   try {
     const allFirs = await FIR.find();

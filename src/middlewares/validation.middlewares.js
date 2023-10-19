@@ -12,7 +12,7 @@ export const validate = (req, res, next) => {
     let extractedErrors = errors.array().map((err) => err.msg);
     R4XX(res, 403, "VALIDATION-ERROR", "Error during request validation.", {
       faultyFields: fields,
-      messages: extractedErrors,
+      messages: extractedErrors[0],
     });
   }
 };
