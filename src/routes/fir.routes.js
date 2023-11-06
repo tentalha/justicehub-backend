@@ -27,7 +27,11 @@ import {
 const router = Router();
 
 //GET
-router.get("/", hasRights(["admin", "operator", "investigator"]), getAllFIRs);
+router.get(
+  "/",
+  hasRights(["admin", "operator", "investigator", "citizen"]),
+  getAllFIRs
+);
 router.get("/pending", hasRights(["admin"]), getPendingFIRs);
 router.get("/active", hasRights(["admin"]), getActiveFIRs);
 router.get("/closed", hasRights(["admin"]), getClosedFIRs);

@@ -5,7 +5,7 @@ import {
   NAME_INVALID,
   NAME_REQUIRED,
 } from "../constants";
-import { body,query } from "express-validator";
+import { body, query } from "express-validator";
 
 export const criminalCreationValidationRules = () => {
   return [

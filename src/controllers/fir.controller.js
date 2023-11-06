@@ -16,6 +16,7 @@ import {
   approveFIRandAssignment,
   deleteFIRId,
   fetchCaseByInvestigatorId,
+  fetchCasesOfCitizen,
 } from "../services";
 import cloudinary from "../configs/cloudinaryConfig";
 import { sanitizeFir, sanitizeFirs } from "../utils";
@@ -77,6 +78,8 @@ export const getAllFIRs = async (req, res, next) => {
       case "operator":
         firs = await fetchCaseByOperatorId(req.user);
         break;
+      case "citizen":
+        firs = await fetchCasesOfCitizen(req.user);
       default:
         firs = await fetchCaseByInvestigatorId(req.user);
     }
