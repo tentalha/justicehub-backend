@@ -6,6 +6,7 @@ import {
   deleteCriminal as deleteCriminalS,
   fetchCriminalId,
   patchCriminal,
+  checkStatus,
 } from "../services";
 import { USER_ALREADY_EXIST } from "../constants";
 import cloudinary from "../configs/cloudinaryConfig";
@@ -107,6 +108,31 @@ export const updateCriminalId = async (req, res, next) => {
     R2XX(res, 200, "SUCCESS", `Criminal with id ${id} updated`, {
       criminal: updatedCriminal,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkCriminalStatus = async (req, res, next) => {
+  try {
+    const citizenCNIC = req.query.CNIC;
+    const status = await checkStatus(citizenCNIC);
+
+    if (status) {
+      R2XX(
+        res,
+        200,
+        "SUCCESS",
+        `Citizen with CNIC ${citizenCNIC} is criminal.`
+      );
+    } else {
+      R2XX(
+        res,
+        404,
+        "NOT-FOUND",
+        `Citizen with CNIC ${citizenCNIC} is not a criminal.`
+      );
+    }
   } catch (error) {
     next(error);
   }

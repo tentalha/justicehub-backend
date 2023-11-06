@@ -27,7 +27,7 @@ export const issueJWT = (data, expiresIn, priv_key) => {
 
 // -------------------------------------------------------------------->>
 
-export const verifyToken = (token, ) => {
+export const verifyToken = (token) => {
   return jwt.verify(
     token,
     ACCESS_PUB_KEY,

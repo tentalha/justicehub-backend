@@ -5,7 +5,7 @@ import {
   NAME_INVALID,
   NAME_REQUIRED,
 } from "../constants";
-import { body } from "express-validator";
+import { body,query } from "express-validator";
 
 export const criminalCreationValidationRules = () => {
   return [
@@ -46,5 +46,16 @@ export const criminalUpdationValidationRules = () => {
       .matches(/^\d{5}-\d{7}-\d{1}$/)
       .withMessage(CNIC_INVALID),
     body("age").optional().isNumeric().withMessage("Age must be a number"),
+  ];
+};
+
+export const validateCNIC = () => {
+  return [
+    query("CNIC")
+      .notEmpty()
+      .withMessage(CNIC_REQUIRED)
+      .isString()
+      .matches(/^\d{5}-\d{7}-\d{1}$/)
+      .withMessage(CNIC_INVALID),
   ];
 };

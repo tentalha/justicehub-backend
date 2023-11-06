@@ -60,3 +60,11 @@ export const patchCriminal = async (id, body) => {
     return Promise.reject(error);
   }
 };
+
+export const checkStatus = async (CNIC) => {
+  try {
+    return await Criminal.findOne({ CNIC });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

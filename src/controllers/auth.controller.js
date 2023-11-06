@@ -40,7 +40,6 @@ export const login = async (req, res, next) => {
       jwt,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

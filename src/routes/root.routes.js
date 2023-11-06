@@ -13,7 +13,7 @@ export const router = Router();
 router.use("/me", isLoggedIn, meRoutes);
 router.use("/auth", isNotLoggedIn, authRoutes);
 router.use("/operators", isLoggedIn, hasRights(["admin"]), operatorRoutes);
-router.use("/criminals", isLoggedIn, hasRights(["admin"]), criminalRoutes);
+router.use("/criminals", isLoggedIn, criminalRoutes);
 router.use("/firs", isLoggedIn, firRoutes);
 router.use(
   "/investigators",
