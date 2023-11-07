@@ -1,4 +1,5 @@
-import { FIR } from "../models";
+import { getUserById } from "../services";
+import { FIR, User } from "../models";
 
 export const createNewFIR = async (fir) => {
   try {
@@ -59,10 +60,10 @@ export const fetchCaseByInvestigatorId = async (investigatorId) => {
   }
 };
 
-export const fetchCasesOfCitizen = async (citizenCNIC) => {
+export const fetchCasesOfCitizen = async (citizenId) => {
   try {
-    const fir = await FIR.find({ complainantCNIC: citizenCNIC });
-    return fir;
+    const user = await getUserById(citizenId);
+    return await FIR.find({ complainantCNIC: user.CNIC });
   } catch (error) {
     return Promise.reject(error);
   }

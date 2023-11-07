@@ -80,6 +80,7 @@ export const getAllFIRs = async (req, res, next) => {
         break;
       case "citizen":
         firs = await fetchCasesOfCitizen(req.user);
+        break;
       default:
         firs = await fetchCaseByInvestigatorId(req.user);
     }
