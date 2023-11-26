@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "justicehub-backend",
+      "script": "npm",
+      "args": "start"
+    }
+  ]
+}

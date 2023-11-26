@@ -12,7 +12,6 @@ export const io = new Server(server, {
   },
 });
 //------------------------------------------------------------->>
-
 server.listen(PORT);
 
 server.on("listening", () => {
@@ -20,7 +19,6 @@ server.on("listening", () => {
 });
 
 server.on("error", onError);
-
 //---------------------------------------------------------------->>
 
 function onError(error) {
