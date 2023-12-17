@@ -247,3 +247,11 @@ export const updateFIRStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+export const uploadEvidenceFIRId = async (req, res, next) => {
+  try {
+    const { caseId } = req.params;
+  } catch (error) {
+    next(error);
+  }
+};

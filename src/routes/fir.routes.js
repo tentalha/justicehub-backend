@@ -71,4 +71,6 @@ router.delete(
   deleteFIR
 );
 
+// router.post("/:caseId/evidence", hasRights["investigator"]);
+
 export default router;

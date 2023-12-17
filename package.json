@@ -5,8 +5,8 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon --es-module-specifier-resolution=node ./src/bin/www.js",
-    "start": "NODE_ENV=production node --es-module-specifier-resolution=node ./src/bin/www.js"
+    "dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./src/bin/www.js",
+    "start": "cross-env NODE_ENV=production node --es-module-specifier-resolution=node ./src/bin/www.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

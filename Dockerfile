@@ -8,13 +8,10 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install application dependencies
-RUN npm install
+RUN npm ci
 
 # Copy the application code to the working directory
 COPY . .
 
-# Expose the port on which the app runs
-EXPOSE 3500
-
 # Define the command to run your application
-CMD ["pm2", "start", "pm2.json"]
+CMD ["npm","start"]
