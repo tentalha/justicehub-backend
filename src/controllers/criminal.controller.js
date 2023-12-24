@@ -10,7 +10,6 @@ import {
 } from "../services";
 import { USER_ALREADY_EXIST } from "../constants";
 import cloudinary from "../configs/cloudinaryConfig";
-import { sanitizeCriminal } from "../utils";
 
 export const createCriminal = async (req, res, next) => {
   try {

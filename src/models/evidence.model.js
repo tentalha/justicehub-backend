@@ -7,10 +7,19 @@ const evidenceSchema = new Schema(
       required: true,
       trim: true,
     },
-    format: {
+    public_id: {
       type: String,
       required: true,
       trim: true,
+    },
+    caseId: {
+      required: true,
+      type: Schema.Types.ObjectId,
+      ref: "FIRs",
+    },
+    fileType: {
+      required: true,
+      type: String,
     },
   },
   {

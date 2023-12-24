@@ -17,9 +17,12 @@ import {
   deleteFIRId,
   fetchCaseByInvestigatorId,
   fetchCasesOfCitizen,
+  uploadEvidenceOfFIR,
+  fetchEvidencesWithFIRId,
 } from "../services";
 import cloudinary from "../configs/cloudinaryConfig";
 import { sanitizeFir, sanitizeFirs } from "../utils";
+import path from "path";
 
 export const createFir = async (req, res, next) => {
   try {
@@ -248,9 +251,79 @@ export const updateFIRStatus = async (req, res, next) => {
   }
 };
 
-export const uploadEvidenceFIRId = async (req, res, next) => {
+export const postEvidenceFIRId = async (req, res, next) => {
   try {
-    const { caseId } = req.params;
+    const { id } = req.params;
+    const fir = await fetchCaseById(id);
+    //Checking if FIR exist in system
+    if (!fir) {
+      return R4XX(res, 404, "NOT-FOUND", `Case with id ${id} not found.`);
+    }
+    //Checking if the evidences are not in array format
+    const files = req.files;
+    console.log(req)
+    if (!Array.isArray(files) || !files.length) {
+      return R4XX(
+        res,
+        403,
+        "VALIDATION-ERROR",
+        "Evidences must be in the form of an array."
+      );
+    }
+    //Upload evidence on Cloudinary
+    let cloudinaryResponses = [];
+
+    for (const item of files) {
+      const upload = await cloudinary.upload(item.path, {
+        resource_type: "auto",
+      });
+      const extname = path.extname(item.originalname).split(".")[1];
+
+      cloudinaryResponses.push({
+        url: upload.secure_url,
+        public_id: upload.public_id,
+        caseId: req.params.id,
+        fileType: extname,
+      });
+    }
+    //Save the references in Database
+    let dbReferences = [];
+    for (const obj of cloudinaryResponses) {
+      const newEvidence = await uploadEvidenceOfFIR(obj);
+      dbReferences.push(newEvidence);
+    }
+    //Sending response to user
+    R2XX(res, 200, "SUCCESS", "Evidences Uploaded successfully.", {
+      data: dbReferences,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getEvidenceFIRId = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!(await fetchCaseById(id))) {
+      return R4XX(
+        res,
+        404,
+        "NOT-FOUND",
+        `Case with id ${id} not found in system`
+      );
+    }
+
+    const evidences = await fetchEvidencesWithFIRId(id);
+    R2XX(res, 200, "SUCCESS", "Evidences attached in payload.", { evidences });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteEvidenceFIRId = async (req, res, next) => {
+  try {
   } catch (error) {
     next(error);
   }

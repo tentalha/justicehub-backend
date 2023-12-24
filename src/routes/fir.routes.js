@@ -19,8 +19,10 @@ import {
   getAllFIRs,
   getClosedFIRs,
   getCompletedFIRs,
+  getEvidenceFIRId,
   getFIRCounts,
   getPendingFIRs,
+  postEvidenceFIRId,
   updateFIRStatus,
 } from "../controllers";
 
@@ -32,6 +34,7 @@ router.get(
   hasRights(["admin", "operator", "investigator", "citizen"]),
   getAllFIRs
 );
+
 router.get("/pending", hasRights(["admin"]), getPendingFIRs);
 router.get("/active", hasRights(["admin"]), getActiveFIRs);
 router.get("/closed", hasRights(["admin"]), getClosedFIRs);
@@ -71,6 +74,22 @@ router.delete(
   deleteFIR
 );
 
-// router.post("/:caseId/evidence", hasRights["investigator"]);
+//Evidence
+router.post(
+  "/:id/evidence",
+  hasRights(["investigator"]),
+  mongoIdValidation(),
+  validate,
+  upload.array("files"),
+  postEvidenceFIRId
+);
+
+router.get(
+  "/:id/evidence",
+  hasRights(["investigator"]),
+  mongoIdValidation(),
+  validate,
+  getEvidenceFIRId
+);
 
 export default router;

@@ -6,7 +6,6 @@ const envFiles = {
 };
 
 dotenv.config({ path: envFiles[process.env.NODE_ENV] });
-dotenv.config();
 
 export const PORT = process.env.PORT || 5000;
 

@@ -1,5 +1,5 @@
 import { getUserById } from "../services";
-import { FIR, User } from "../models";
+import { FIR, User, Evidence } from "../models";
 
 export const createNewFIR = async (fir) => {
   try {
@@ -142,6 +142,36 @@ export const approveFIRandAssignment = async (caseId, investigatorId) => {
 export const deleteFIRId = async (id) => {
   try {
     await FIR.findByIdAndDelete(id);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const uploadEvidenceOfFIR = async (evidence) => {
+  try {
+    let newEvidence = new Evidence({
+      url: evidence?.url,
+      public_id: evidence?.public_id,
+      caseId: evidence?.caseId,
+      fileType: evidence?.fileType,
+    });
+    await newEvidence.save();
+    return newEvidence;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const fetchEvidencesWithFIRId = async (firId) => {
+  try {
+    // return await Evidence.aggregate([
+    //   {
+    //     $match: {
+    //       caseId: firId,
+    //     },
+    //   },
+    // ]);
+    return await Evidence.find({ caseId: firId });
   } catch (error) {
     return Promise.reject(error);
   }

@@ -33,6 +33,7 @@ router.delete(
   validate,
   deleteCriminalId
 );
+
 router.patch(
   "/:id",
   hasRights(["admin"]),
