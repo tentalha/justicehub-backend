@@ -14,6 +14,7 @@ import {
 import {
   approveFIRandAssignInvestigator,
   createFir,
+  deleteEvidenceFIRId,
   deleteFIR,
   getActiveFIRs,
   getAllFIRs,
@@ -90,6 +91,14 @@ router.get(
   mongoIdValidation(),
   validate,
   getEvidenceFIRId
+);
+
+router.delete(
+  "/evidence/:id",
+  hasRights(["investigator", "admin"]),
+  mongoIdValidation(),
+  validate,
+  deleteEvidenceFIRId
 );
 
 export default router;

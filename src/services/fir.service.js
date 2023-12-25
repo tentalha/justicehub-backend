@@ -176,3 +176,21 @@ export const fetchEvidencesWithFIRId = async (firId) => {
     return Promise.reject(error);
   }
 };
+
+export const deleteEvidenceWithId = async (evdId) => {
+  try {
+    return await Evidence.findByIdAndDelete(evdId);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const findEvidenceById = async (id) => {
+  try {
+    const evidence = await Evidence.findOne({ _id: id });
+    console.log(evidence);
+    return evidence;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

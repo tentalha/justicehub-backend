@@ -19,6 +19,8 @@ import {
   fetchCasesOfCitizen,
   uploadEvidenceOfFIR,
   fetchEvidencesWithFIRId,
+  deleteEvidenceWithId,
+  findEvidenceById,
 } from "../services";
 import cloudinary from "../configs/cloudinaryConfig";
 import { sanitizeFir, sanitizeFirs } from "../utils";
@@ -261,7 +263,7 @@ export const postEvidenceFIRId = async (req, res, next) => {
     }
     //Checking if the evidences are not in array format
     const files = req.files;
-    console.log(req)
+    console.log(req);
     if (!Array.isArray(files) || !files.length) {
       return R4XX(
         res,
@@ -324,6 +326,17 @@ export const getEvidenceFIRId = async (req, res, next) => {
 
 export const deleteEvidenceFIRId = async (req, res, next) => {
   try {
+    const { id } = req.params;
+    //Finding the Evidence
+    const evidence = await findEvidenceById(id);
+    // Deleting from Cloundinary
+    await cloudinary.destroy(evidence?.public_id);
+    //Deleting reference form db
+    const deletedFIR = await deleteEvidenceWithId(id);
+    //Sending response
+    R2XX(res, 200, "SUCCESS", "Evidence deleted successfully", {
+      deletedFIR: deletedFIR._id,
+    });
   } catch (error) {
     next(error);
   }
