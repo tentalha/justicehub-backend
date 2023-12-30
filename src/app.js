@@ -2,11 +2,10 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { router } from "./routes";
-import { R4XX, R5XX } from "./API";
+import { R5XX } from "./API";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import { MulterError } from "multer";
 import "./configs/dbConfig";
 // --------------------------------------------------->>
 const app = express();
