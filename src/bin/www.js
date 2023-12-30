@@ -2,6 +2,7 @@ import http from "http";
 import app from "../app";
 import { Server } from "socket.io";
 import { PORT } from "../configs";
+import { chatSpaceAuthentication, chatSpaceConnection } from "../nameSpaces";
 // ------------------------------------------------------------->>
 const server = http.createServer(app);
 
@@ -11,6 +12,17 @@ export const io = new Server(server, {
     methods: ["POST", "GET"],
   },
 });
+
+io.on("connection", (socket) => {
+  socket.disconnect();
+});
+
+const chatSpace = io.of("/chat");
+
+chatSpace.use(chatSpaceAuthentication);
+
+chatSpace.on("connection", chatSpaceConnection);
+
 //------------------------------------------------------------->>
 server.listen(PORT);
 
