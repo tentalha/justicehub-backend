@@ -7,6 +7,8 @@ import operatorRoutes from "./operator.routes";
 import investigatorRoutes from "./investigator.routes";
 import criminalRoutes from "./criminal.routes";
 import firRoutes from "./fir.routes";
+import messageRoutes from "./message.routes";
+import userRoutes from "./users.routes";
 // --------------------------------------------------------->>
 export const router = Router();
 
@@ -21,3 +23,10 @@ router.use(
   hasRights(["admin"]),
   investigatorRoutes
 );
+router.use(
+  "/messages",
+  isLoggedIn,
+  hasRights(["investigator", "citizen"]),
+  messageRoutes
+);
+router.use("/users", isLoggedIn, userRoutes);

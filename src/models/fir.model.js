@@ -43,16 +43,16 @@ const firSchema = new Schema(
     },
     complainantId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users",
     },
     investigatorId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users",
     },
     operatorId: {
       required: true,
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users",
     },
     suspects: [
       {

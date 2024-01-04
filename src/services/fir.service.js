@@ -60,10 +60,30 @@ export const fetchCaseByInvestigatorId = async (investigatorId) => {
   }
 };
 
+export const fetchCaseByInvestigatorId_pop = async (investigatorId) => {
+  try {
+    const fir = await FIR.find({ investigatorId }).populate("complainantId");
+    return fir;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const fetchCasesOfCitizen = async (citizenId) => {
   try {
     const user = await getUserById(citizenId);
     return await FIR.find({ complainantCNIC: user.CNIC });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const fetchCasesOfCitizen_pop = async (citizenId) => {
+  try {
+    const user = await getUserById(citizenId);
+    return await FIR.find({ complainantCNIC: user.CNIC }).populate(
+      "investigatorId"
+    );
   } catch (error) {
     return Promise.reject(error);
   }
@@ -164,13 +184,6 @@ export const uploadEvidenceOfFIR = async (evidence) => {
 
 export const fetchEvidencesWithFIRId = async (firId) => {
   try {
-    // return await Evidence.aggregate([
-    //   {
-    //     $match: {
-    //       caseId: firId,
-    //     },
-    //   },
-    // ]);
     return await Evidence.find({ caseId: firId });
   } catch (error) {
     return Promise.reject(error);
@@ -188,7 +201,6 @@ export const deleteEvidenceWithId = async (evdId) => {
 export const findEvidenceById = async (id) => {
   try {
     const evidence = await Evidence.findOne({ _id: id });
-    console.log(evidence);
     return evidence;
   } catch (error) {
     return Promise.reject(error);
