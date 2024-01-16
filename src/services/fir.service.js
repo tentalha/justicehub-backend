@@ -136,12 +136,29 @@ export const fetchCompleted = async () => {
 
 export const fetchCounts = async () => {
   try {
-    return {
-      pendingCount: await FIR.countDocuments({ status: "pending" }),
-      activeCount: await FIR.countDocuments({ status: "active" }),
-      completedCount: await FIR.countDocuments({ status: "completed" }),
-      closedCount: await FIR.countDocuments({ status: "closed" }),
-    };
+    const firs = await FIR.aggregate([
+      { $match: { status: "completed" } },
+      {
+        $project: {
+          year: { $year: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$year",
+          completedCount: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          year: "$_id",
+          completedCount: 1,
+          _id: 0,
+        },
+      },
+      { $sort: { year: 1 } },
+    ]);
+    return firs;
   } catch (error) {
     return Promise.reject(error);
   }

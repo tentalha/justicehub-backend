@@ -58,6 +58,7 @@ router.post(
   validate,
   createFir
 );
+
 router.post(
   "/approve/:caseId",
   hasRights(["admin"]),

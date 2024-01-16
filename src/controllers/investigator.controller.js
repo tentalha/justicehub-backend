@@ -82,7 +82,7 @@ export const deleteInvestigatorId = async (req, res, next) => {
   try {
     let id = req.params.id;
     const investigatorToDelete = await fetchInvestigatorId(id);
-    if (!investigator) {
+    if (!investigatorToDelete) {
       return R4XX(
         res,
         404,
